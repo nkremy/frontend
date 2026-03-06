@@ -1,0 +1,147 @@
+.container{
+    min-width: 100%;
+    min-height: 100%;
+    /* background: red; */
+    padding: 60px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.top{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.container h1{
+    color: pink;
+}
+
+.actions{
+    display: flex;
+    gap: 1rem;
+    
+}
+
+.actions button{
+    width: auto;
+    min-width: 50px;
+    border-radius: 10px;
+    font-size: 30px;
+}
+
+.container .options{
+    display: flex;
+    padding-top: 10px;
+
+    border-bottom: 3px solid pink;
+}
+.container button{
+    padding: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    background: white;
+    border: none;
+    background: pink;
+}
+
+.container .list{
+    min-width: 200px;
+    border: 1px solid pink;
+    min-height: 400px;
+    max-width: 400px;
+    width: 400px;
+    align-self: center;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.list .item{
+    min-height: 50px;
+    min-width: 200px;
+    background: white;
+    border-radius:10px ;
+    border: 2px solid pink;
+    padding: 10px;
+}
+
+.barreRecherche{
+    min-width: 200px;
+    width: 400px;
+    width: 100%;
+    background: white;
+    min-height: 20px;
+    height: 25px;
+    border-radius: 20px;
+    overflow: hidden;
+    input{
+        width: 100%;
+        border: none;
+        outline: none;
+        padding: 5px;
+    }
+    border: 1px solid pink;
+}
+
+.form .actions button{
+    width: 100%;
+}
+
+.pop_up_1{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.5);
+    top: 0px;
+    left: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form{
+    width: 500px;
+    padding: 10px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    border: 2px solid pink;
+    background: rgba(255, 255, 255, 0.361);
+    border-radius: 10px;
+}
+
+h2{
+    color: pink;
+}
+
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+form label{
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+form input{
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid pink;
+}
+.item {
+    color: black;
+    h2{
+        color: black;
+    }
+}
+
+.red{
+    background: red;
+}

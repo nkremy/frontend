@@ -1,0 +1,44 @@
+
+.pop_up_1 .containerq{
+    background: white;
+    width: 80%;
+    height: 80%;
+    border-radius: 30px;
+    overflow: hidden;
+    border: 2px solid pink;
+    padding: 10px;
+    display: flex;
+    flex-direction:column ;
+    gap: 1rem;
+    align-items: center;
+    position: relative;
+}
+.definirAction{
+    display: flex;
+    justify-content: center;
+    border: 2px solid pink;
+    width: 150px;
+    border-radius: 10px;
+    padding: 5px;
+}
+.definirAction div{
+    min-width: 50px;
+    background: blue;
+}
+
+.boule{
+    min-height: 10px;
+    min-width: 10px;
+    height: 10px;
+   max-width: 10px;
+    max-width: 10px;
+    max-height: 10px;
+    padding: 2.5px;
+    border-radius: 50%;
+    background: pink;
+}
+
+.containerq .float{
+    position: absolute;
+    align-self: flex-end;
+}
