@@ -2,11 +2,12 @@ import { useParams,Link } from "react-router-dom"
 import { useEffect , useState} from 'react';
 import "./PersonnalProspectPage.css"
 import { Prospect } from "../Prospect/Prospect";
+import { URLBTS } from "../../component/tools.js";
 
 
 export function PersonnalProspectPage(){
     let id = useParams().id;
-    let url = `http://localhost:8080/api/prospects/${id}`;
+    let url = `${URLBTS}/prospects/${id}`;
     let [prospect,setProspect] = useState(null);
 
     useEffect(()=>{
