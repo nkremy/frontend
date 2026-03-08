@@ -1,0 +1,178 @@
+.filter-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.filter-tab {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1.5px solid #e0e0f0;
+  background: white;
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: #666680;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-tab--active {
+  border-color: #e91e8c;
+  background: #fdf0f7;
+  color: #e91e8c;
+}
+
+.filter-tab:hover:not(.filter-tab--active) {
+  border-color: #c0c0d8;
+  color: #444460;
+}
+
+/* Msg row */
+.msg-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 20px;
+}
+
+.msg-row__inner { flex: 1; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.msg-row__left { display: flex; align-items: center; gap: 10px; }
+.msg-row__prospect {
+  font-size: 0.87rem;
+  font-weight: 600;
+  color: #e91e8c;
+  text-decoration: none;
+}
+.msg-row__prospect:hover { text-decoration: underline; }
+.msg-row__content {
+  font-size: 0.93rem;
+  color: #1a1a2e;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.msg-row__footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.msg-row__date { font-size: 0.78rem; color: #b0b0c8; }
+.msg-row__badges { display: flex; gap: 6px; }
+.msg-row__actions { flex-shrink: 0; }
+
+/* ── Statut badges ───────────────────────────────────────────── */
+.statut-badge {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  font-size: 0.75rem; font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 99px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.statut-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.statut--recu       { background: #f1f5f9; color: #64748b; border-color: #e2e8f0; }
+.statut--en-analyse { background: #fef9c3; color: #a16207; border-color: #fde68a; }
+.statut--analyse    { background: #ede9fe; color: #6d28d9; border-color: #ddd6fe; }
+.statut--repondu    { background: #dcfce7; color: #15803d; border-color: #bbf7d0; }
+.statut--alerte     { background: #fee2e2; color: #b91c1c; border-color: #fecaca; animation: pulse-alerte 2s infinite; }
+
+@keyframes pulse-alerte {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.3); }
+  50%       { box-shadow: 0 0 0 4px rgba(239,68,68,0); }
+}
+
+/* ── Filtre statut tabs ──────────────────────────────────────── */
+.statut-filter-tabs { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.statut-filter-tab {
+  display: flex; align-items: center; gap: 0.35rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  background: var(--surface);
+  font-size: 0.78rem; font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer; transition: all 0.15s;
+}
+.statut-filter-tab:hover               { border-color: var(--primary); color: var(--primary); }
+.statut-filter-tab--active             { background: var(--primary); color: white; border-color: var(--primary); }
+.statut-filter-tab--danger             { border-color: #fecaca; color: #b91c1c; }
+.statut-filter-tab--danger.statut-filter-tab--active { background: #ef4444; border-color: #ef4444; }
+.statut-filter-count {
+  background: rgba(0,0,0,0.12);
+  border-radius: 99px;
+  padding: 0 0.4rem;
+  font-size: 0.7rem;
+}
+
+/* ── Alerte banner ───────────────────────────────────────────── */
+.messages-alerte-banner {
+  display: flex; align-items: center; gap: 0.75rem;
+  background: #fef2f2; border: 1px solid #fecaca;
+  border-radius: var(--radius); padding: 0.75rem 1rem;
+  color: #b91c1c; font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+.btn-sm { padding: 0.3rem 0.75rem; font-size: 0.78rem; font-weight: 600; border-radius: var(--radius-sm); cursor: pointer; border: none; }
+.btn-danger { background: #ef4444; color: white; }
+.btn-danger:hover { background: #dc2626; }
+
+/* ── Messages list ───────────────────────────────────────────── */
+.messages-list { display: flex; flex-direction: column; gap: 0.6rem; }
+.message-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.9rem 1.1rem;
+  cursor: pointer;
+  transition: box-shadow 0.15s, border-color 0.15s, transform 0.1s;
+}
+.message-row:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.08); border-color: var(--primary); transform: translateX(2px); }
+.message-row--alerte { border-left: 4px solid #ef4444; background: #fff5f5; }
+
+.message-row-left   { display: flex; flex-direction: column; gap: 0.4rem; align-items: flex-start; min-width: 100px; }
+.message-row-center { display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; }
+.message-row-right  { display: flex; flex-direction: column; gap: 0.35rem; align-items: flex-end; flex-shrink: 0; }
+
+.message-row-prospect { font-size: 0.82rem; font-weight: 600; color: var(--primary); text-decoration: none; }
+.message-row-prospect:hover { text-decoration: underline; }
+.message-row-contenu { font-size: 0.875rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0; max-width: 500px; }
+.message-row-date { font-size: 0.75rem; color: var(--text-muted); white-space: nowrap; }
+.message-row-indicators { display: flex; gap: 0.4rem; font-size: 0.8rem; }
+.indicator { cursor: default; }
+
+/* ── Message detail dans modal ───────────────────────────────── */
+.msg-detail { display: flex; flex-direction: column; gap: 1.25rem; }
+.msg-detail-meta { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.msg-detail-prospect { display: flex; align-items: center; gap: 0.5rem; }
+.msg-detail-prospect-link { color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+.msg-detail-prospect-link:hover { text-decoration: underline; }
+.msg-detail-field-label { font-size: 0.73rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); display: block; margin-bottom: 0.3rem; }
+.msg-detail-section { display: flex; flex-direction: column; gap: 0.6rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+.msg-detail-section-title { font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); }
+.msg-detail-contenu { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.85rem 1rem; font-size: 0.9rem; line-height: 1.6; white-space: pre-wrap; color: var(--text); }
+.msg-detail-loading { display: flex; align-items: center; gap: 0.5rem; color: var(--text-muted); font-size: 0.875rem; }
+.msg-detail-empty { color: var(--text-muted); font-style: italic; font-size: 0.875rem; margin: 0; }
+.msg-detail-analyse { display: flex; flex-direction: column; gap: 0.75rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; }
+.msg-detail-analyse-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.msg-detail-field { display: flex; flex-direction: column; }
+.msg-detail-cats { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.msg-detail-confiance { display: flex; align-items: center; gap: 0.5rem; }
+.mini-bar { flex: 1; height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; }
+.mini-bar-fill { height: 100%; border-radius: 99px; transition: width 0.3s; }
+.msg-detail-alerte-box { background: #fef2f2; border: 1px solid #fecaca; border-radius: var(--radius-sm); padding: 0.7rem 0.9rem; color: #b91c1c; font-size: 0.875rem; }
+.msg-detail-analyse-desc { background: white; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.75rem; font-size: 0.875rem; line-height: 1.6; margin: 0; color: var(--text); }
+.msg-detail-reponses { display: flex; flex-direction: column; gap: 0.7rem; }
+.msg-detail-reponse { background: var(--bg); border: 1px solid var(--border); border-left: 3px solid #22c55e; border-radius: var(--radius-sm); padding: 0.75rem 1rem; }
+.msg-detail-reponse-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; }
+.msg-detail-reponse-contenu { font-size: 0.875rem; line-height: 1.6; margin: 0; color: var(--text); }
+.badge--sm { font-size: 0.7rem; padding: 0.15rem 0.5rem; }
+.spinner--sm { width: 16px; height: 16px; border-width: 2px; }
+
+@media (max-width: 640px) {
+  .message-row { grid-template-columns: 1fr; gap: 0.5rem; }
+  .message-row-right { flex-direction: row; align-items: center; justify-content: space-between; }
+  .msg-detail-analyse-row { grid-template-columns: 1fr; }
+  .statut-filter-tabs { gap: 0.3rem; }
+}

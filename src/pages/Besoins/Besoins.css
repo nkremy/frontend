@@ -1,0 +1,7 @@
+.besoin-row__inner { padding: 16px 20px; display: flex; flex-direction: column; gap: 8px; }
+.besoin-row__header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.besoin-row__name { font-size: 1rem; font-weight: 700; color: #1a1a2e; }
+.besoin-row__prospect { font-size: 0.83rem; color: #e91e8c; text-decoration: none; display: block; margin-top: 2px; }
+.besoin-row__prospect:hover { text-decoration: underline; }
+.besoin-row__date { font-size: 0.78rem; color: #b0b0c8; }
+.besoin-row__desc { font-size: 0.9rem; color: #666680; line-height: 1.5; }

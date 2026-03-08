@@ -1,332 +1,227 @@
-import { useEffect, useState } from "react"
-import {URLBTS} from "../../component/tools.js"
-import "./Services.css"
-        fetch(`${URLBTS}`)
-let url = URLBTS+"/services";
-export function Services(){
-    let [services , setServices] = useState([]);
-    let [isLoading,setIsLoading] = useState(false);
-    let [error,setError] = useState("")
-    
-    let [formAddVisible,setFormAddVisible] = useState(false);
-    let [formEditVisible,setFormEditVisible] = useState(false);
-    let [formDeleteVisible,setFormDeleteVisible] = useState(false);
+import { useEffect, useState } from "react";
+import { apiFetch } from "../../utils/api";
+import { useToast } from "../../components/Toast/Toast";
+import { Modal, ConfirmModal } from "../../components/Modal/Modal";
+import "./Services.css";
 
-    let [service ,setService] = useState(null);
+export function Services() {
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [showAdd, setShowAdd] = useState(false);
+  const [editItem, setEditItem] = useState(null);
+  const [deleteItem, setDeleteItem] = useState(null);
+  const toast = useToast();
 
-    function getAllServices(){
-        // setIsLoading(true)
-        fetch(url)
-        .then(res=>{
-            if(!res.ok){
-                throw new Error("Erreur lors de la requete avec le status " + res.status)
-            }
-            return res.json();
-        }).then(res=>{
-            console.log(" donnees recue " + res)
-            setServices(res);
-            // setIsLoading(false);
-        }).catch(error=>{
-            if (error.name !== 'AbortError') {
-                setError("Erreur " +  error );
-                console.log("Error" + error);
-                // setIsLoading(false);
-            }
-        })
+  useEffect(() => { loadServices(); }, []);
+
+  async function loadServices() {
+    setLoading(true);
+    try {
+      const data = await apiFetch("/services");
+      setServices(data);
+    } catch (err) {
+      toast.error("Impossible de charger les services");
+    } finally {
+      setLoading(false);
     }
+  }
 
-    useEffect(()=>{
-        getAllServices();
-    },[])
+  async function handleAdd(form) {
+    try {
+      const data = await apiFetch("/services", {
+        method: "POST",
+        body: JSON.stringify(form),
+      });
+      setServices((p) => [...p, data]);
+      setShowAdd(false);
+      toast.success("Service ajouté !");
+    } catch (err) {
+      toast.error(err.message || "Erreur lors de l'ajout");
+    }
+  }
 
-    return <div className=" container">
-        <div className='top'>
-            <h1>Services</h1>
+  async function handleUpdate(form, id) {
+    try {
+      const data = await apiFetch(`/services/${id}`, {
+        method: "PUT",
+        body: JSON.stringify(form),
+      });
+      setServices((p) => p.map((s) => (s.id === id ? data : s)));
+      setEditItem(null);
+      toast.success("Service modifié !");
+    } catch (err) {
+      toast.error(err.message || "Erreur lors de la modification");
+    }
+  }
 
-                <div className='actions'>
-                    <button onClick={() => setFormAddVisible(true)}>+</button>
-                    <button>+</button>
-                </div>
+  async function handleDelete(id) {
+    try {
+      await apiFetch(`/services/${id}`, { method: "DELETE" });
+      setServices((p) => p.filter((s) => s.id !== id));
+      setDeleteItem(null);
+      toast.success("Service supprimé");
+    } catch (err) {
+      toast.error(err.message || "Erreur de suppression");
+    }
+  }
+
+  const filtered = services.filter(
+    (s) =>
+      s.name?.toLowerCase().includes(search.toLowerCase()) ||
+      s.description?.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <div className="page">
+      <div className="page-header">
+        <div>
+          <h1 className="page-title">Services</h1>
+          <p className="page-subtitle">Catalogue des services proposés par GNO Solutions</p>
+        </div>
+        <button className="btn btn--primary" onClick={() => setShowAdd(true)}>
+          ＋ Nouveau service
+        </button>
+      </div>
+
+      <div className="stats-row">
+        <div className="stat-card">
+          <div className="stat-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="22" height="22">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2"/>
+            </svg>
+          </div>
+          <div>
+            <div className="stat-card__value">{services.length}</div>
+            <div className="stat-card__label">Services actifs</div>
+          </div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="22" height="22">
+              <path d="M9 11l3 3L22 4"/>
+            </svg>
+          </div>
+          <div>
+            <div className="stat-card__value">
+              {services.reduce((s, svc) => s + (svc.besoins?.length || 0), 0)}
             </div>
-        <div className="options">
-            {/* <select>
-                <option value={"all"}>All</option>
-            </select> */}
-            <button>Services ({services.length})</button>
+            <div className="stat-card__label">Demandes reçues</div>
+          </div>
         </div>
-        <div className="list">
-            { !(services.length == 0) ? services.map((item,index)=>{
-                    return <div key={index} className='item' onClick={
-                        ()=>{
-                            setService(item)
-                            setFormEditVisible(true);
+      </div>
 
-                        }
-                    }>
-                                <div className='top'>
-                                    <div className="info">
-                                        <span>{item.name}</span>
-                                    </div>
-                              
-                                    
-                                </div>
-                                <div content="contenu">
-                                    <p>{item.description}</p>
-                                </div>
-                            </div>
-                        }) : <div style={{textAlign:"center"}}>No messages found.</div>}
+      <div className="toolbar">
+        <div className="search-bar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#9090a8" strokeWidth="2" width="16" height="16">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          <input
+            placeholder="Rechercher un service..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
         </div>
-        
-        {formAddVisible && <FormAdd setVisible = {setFormAddVisible} action={add}/>}
-        {formEditVisible && <FormEdit setVisible = {setFormEditVisible}  action={{update,remove}} editItem={service}/>}
-        {formDeleteVisible && <DeleteProspect setVisible = {setFormDeleteVisible} action={deleteService}  deleteService={prospect}/>}
-    
+        {search && (
+          <span className="badge badge--gray">
+            {filtered.length} résultat{filtered.length !== 1 ? "s" : ""}
+          </span>
+        )}
+      </div>
+
+      {loading ? (
+        <div className="loading-container"><div className="spinner" /><span>Chargement...</span></div>
+      ) : filtered.length === 0 ? (
+        <div className="empty-state">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" width="48" height="48">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M2 12h2M20 12h2"/>
+          </svg>
+          <p>{search ? "Aucun service ne correspond" : "Aucun service enregistré"}</p>
+          {!search && (
+            <button className="btn btn--primary btn--sm" onClick={() => setShowAdd(true)}>
+              Ajouter le premier service
+            </button>
+          )}
+        </div>
+      ) : (
+        <div className="services-grid">
+          {filtered.map((s) => (
+            <div key={s.id} className="service-card card">
+              <div className="service-card__icon">
+                {s.name?.charAt(0)?.toUpperCase() || "S"}
+              </div>
+              <div className="service-card__body">
+                <h3 className="service-card__name">{s.name}</h3>
+                <p className="service-card__desc">
+                  {s.description || <em style={{ color: "#b0b0c8" }}>Aucune description</em>}
+                </p>
+                {s.besoins?.length > 0 && (
+                  <span className="badge badge--pink" style={{ marginTop: 6 }}>
+                    {s.besoins.length} demande{s.besoins.length > 1 ? "s" : ""}
+                  </span>
+                )}
+              </div>
+              <div className="service-card__actions">
+                <button className="btn btn--icon" title="Modifier" onClick={() => setEditItem(s)}>✏️</button>
+                <button className="btn btn--icon" title="Supprimer" onClick={() => setDeleteItem(s)}>🗑️</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {showAdd && (
+        <Modal title="Ajouter un service" onClose={() => setShowAdd(false)}>
+          <ServiceForm onSubmit={handleAdd} onCancel={() => setShowAdd(false)} />
+        </Modal>
+      )}
+
+      {editItem && (
+        <Modal title="Modifier le service" onClose={() => setEditItem(null)}>
+          <ServiceForm
+            initial={editItem}
+            onSubmit={(form) => handleUpdate(form, editItem.id)}
+            onCancel={() => setEditItem(null)}
+          />
+        </Modal>
+      )}
+
+      {deleteItem && (
+        <ConfirmModal
+          message={`Supprimer le service "${deleteItem.name}" ? Tous les besoins associés seront impactés.`}
+          onConfirm={() => handleDelete(deleteItem.id)}
+          onCancel={() => setDeleteItem(null)}
+        />
+      )}
     </div>
-
-
-    
-    function add(service) {
-        //fonction qui permet d'ajouter une service dans la base de donnees
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(service)
-        }).then(res=>{
-            if(!res.ok){
-                throw new Error(`Serveur : ${res.status}`)
-            }
-            return res.json();
-        }).then(data=>{
-            console.log("Service ajouter ajouté :", data);
-            // Optionnel : mettre à jour la liste des prospects après l'ajout
-            setServices(prev => [...prev, data]);
-            setFormAddVisible(false);
-
-        }).catch(error=>{
-            if(error.name !== "AbortError"){
-                console.error("Erreur lors de l'ajout du prospect :", error.message);
-            }
-
-        })
-
-    }
-
-     function update(item,id) {
-        //cette fonctione de modifier un service
-        //item ici represente le service que je souhaire modifier 
-        fetch(`${url}/${id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(item)
-        }).then(res=>{
-            if(!res.ok){
-                throw new Error(`Serveur : ${res.status}`)
-            }
-            return res.json();
-        }).then(data=>{
-            console.log("Service modifier modifier :", data);
-            // Optionnel : mettre à jour la liste des prospects après l'ajout
-            // setProspects(prev => [...prev, data]);
-            let index = services.findIndex(item => item.id === id);
-            if (index !== -1) {
-                setServices(prev => {
-                    const updatedProspects = [...prev];
-                    updatedProspects[index] = data;
-                    return updatedProspects;
-                });
-            }
-            setFormEditVisible(false);
-        }).catch(error=>{
-            if(error.name !== "AbortError"){
-                console.error("Erreur lors de l'ajout du prospect :", error.message);
-            }
-        })
-    }
-
-    function remove(id) {
-        //cette fonctione permet de supprimer un service de la base de donnees
-        //item ici represente le service que je souhaire modifier 
-        fetch(`${url}/${id}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(res=>{
-            if(!res.ok){
-                throw new Error(`Serveur : ${res.status}`)
-            }
-            // return res.json();
-             console.log("Service modifier modifier :", res.status);
-            // Optionnel : mettre à jour la liste des prospects après l'ajout
-                setServices(prev => {
-                   return prev.filter(item=>item.id !== id)
-                });
-        })
-        // .then(data=>{
-        //     console.log("Service modifier modifier :", data);
-        //     // Optionnel : mettre à jour la liste des prospects après l'ajout
-        //         setServices(prev => {
-        //            return prev.filter(item=>item.id !== id)
-        //         });
-
-        // })
-        .catch(error=>{
-            if(error.name !== "AbortError"){
-                console.error("Erreur lors de l'ajout du prospect :", error.message);
-            }
-        })
-    }
-    
+  );
 }
 
-function FormAdd({setVisible,action}){
-    let [service,setService] = useState({name:"",description:""});
-    return (
-        <div className=' pop_up_1'>
-            <div className='form'>
-                <h2>Ajouter un service</h2>
+function ServiceForm({ initial = {}, onSubmit, onCancel }) {
+  const [form, setForm] = useState({
+    name: initial.name || "",
+    description: initial.description || "",
+  });
 
-                <form className=''>
-                    <label htmlFor="">Name</label>
-                    <input type="text" value={service.name} onChange={(e)=>{
-                        setService(prev=>{return {...prev,name:e.target.value}})
-                    }}  />
-
-                    <label htmlFor="">Description</label>
-                    <input type="email" value={service.description} onChange={(e)=>{
-                        setService(prev=>{return {...prev,description:e.target.value}})
-                    }}  />
-                    
-                   
-
-                <div className='actions'>
-                        <button
-                            onClick={(e)=>{
-                                e.preventDefault()
-                                console.log(service);
-                                action(service);
-                            }}
-                        >Save</button>
-                        <button onClick={(e) => {
-                            e.preventDefault();
-                            setVisible(false)}
-                            
-                            }>Cancel</button>
-                </div>
-                </form>
-            </div>
-            
-        </div>
-    )
+  return (
+    <form onSubmit={(e) => { e.preventDefault(); if (form.name) onSubmit(form); }}
+      style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+      <div className="form-group">
+        <label>Nom du service *</label>
+        <input type="text" placeholder="Ex : Développement web" value={form.name} required
+          onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))} />
+      </div>
+      <div className="form-group">
+        <label>Description</label>
+        <textarea placeholder="Décrivez ce service..." value={form.description}
+          onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))} />
+      </div>
+      <div className="modal__actions">
+        <button type="button" className="btn btn--outline" onClick={onCancel}>Annuler</button>
+        <button type="submit" className="btn btn--primary">{initial.id ? "Enregistrer" : "Ajouter"}</button>
+      </div>
+    </form>
+  );
 }
-
-function FormEdit({setVisible,editItem,action}){
-   let [service,setService] = useState(editItem);
-   let [edit , setEdit] = useState(false);
-   console.log("editItem***********************************");
-   console.log(editItem);
-    let [formDeleteVisible,setFormDeleteVisible] = useState(false);
-
-    return (
-        <div className=' pop_up_1'>
-            <div className="containerq">
-                <div className="definirAction" ><span>see more</span><div> <span className="boule">.</span></div><span>edit</span></div>
-                <div className='form'>
-                <h2>Modifer un service</h2>
-
-                <form className=''>
-                    <label htmlFor="">Name</label>
-                    <input type="text" value={service.name} onChange={(e)=>{
-                        setService(prev=>{return {...prev,name:e.target.value}})
-                    }}  />
-
-                    <label htmlFor="">Description</label>
-                    <input type="email" value={service.description} onChange={(e)=>{
-                        setService(prev=>{return {...prev,description:e.target.value}})
-                    }}  />
-                    
-                   
-
-                <div className='actions'>
-                        <button
-                            onClick={(e)=>{
-                                e.preventDefault()
-                                console.log(service);
-                                action.update(service,service.id);
-                            }}
-                        >Save</button>
-                        <button onClick={(e) => {
-                            e.preventDefault();
-                            setVisible(false)}
-                            
-                            }>Cancel</button>
-                        </div>
-                    </form>
-                </div>
-
-
-                {/*  */}
-                <div className="actions float">
-                    <button onClick={()=>{
-                        setVisible(false)
-                    }}>exit</button>
-                    <button onClick={()=>{
-                        setFormDeleteVisible(true)
-                    }}>Delete</button>
-
-                   
-                </div>
-
-                {formDeleteVisible && <FormDelete setVisible={setFormDeleteVisible}
-                    itemAction={editItem} 
-                    action={action.remove}
-                    setVisibleParent = {setVisible}
-                    />}
-
-            </div>
-            
-            
-        </div>
-    )
-    
-}
-
-function FormDelete({setVisible,itemAction,action,setVisibleParent}){
-    console.log("dnas le compesont de suppression : ********************************")
-    console.log(itemAction)
-    return (
-        <div className=' pop_up_1'>
-            <div className='form'>
-                <h2>Voulez vous vraiment supprimer les prospects : {itemAction.name}</h2>
-
-                <form className=''>
-                   
-
-                <div className='actions'>
-                        <button
-                        className='red'
-                            onClick={(e)=>{
-                                e.preventDefault()
-                                console.log("click");
-                                action(itemAction.id);
-                                setVisible(false)
-                                setVisibleParent(false)
-                            }}
-                        >Delete</button>
-                        <button onClick={(e) => {
-                            e.preventDefault();
-                            setVisible(false)}
-                            
-                            }>Cancel</button>
-                </div>
-                </form>
-            </div>
-            
-        </div>
-    )
-}
-

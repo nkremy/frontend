@@ -1,0 +1,145 @@
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #9090a8;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  transition: color 0.2s;
+}
+.back-link:hover { color: #e91e8c; }
+
+/* Profile card */
+.profile-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.profile-card__avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e91e8c, #c2185b);
+  color: white;
+  font-size: 2rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.profile-card__info { flex: 1; min-width: 0; }
+.profile-card__name { font-size: 1.4rem; font-weight: 800; color: #1a1a2e; margin-bottom: 6px; }
+.profile-card__details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  font-size: 0.87rem;
+  color: #666680;
+  margin-bottom: 12px;
+}
+
+.profile-card__stats {
+  display: flex;
+  gap: 24px;
+}
+
+.profile-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.profile-stat__val { font-size: 1.3rem; font-weight: 800; color: #e91e8c; }
+.profile-stat__lbl { font-size: 0.76rem; color: #9090a8; }
+
+/* Message card */
+.msg-card__inner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  flex-wrap: wrap;
+}
+
+.msg-card__left { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.msg-card__content {
+  font-size: 0.93rem;
+  color: #1a1a2e;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.msg-card__date { font-size: 0.78rem; color: #b0b0c8; }
+.msg-card__right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; flex-shrink: 0; }
+
+/* Besoin card */
+.besoin-card__inner { padding: 16px 20px; display: flex; flex-direction: column; gap: 8px; }
+.besoin-card__header { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.besoin-card__name { font-size: 1rem; font-weight: 700; color: #1a1a2e; }
+.besoin-card__date { font-size: 0.78rem; color: #b0b0c8; }
+.besoin-card__desc { font-size: 0.9rem; color: #666680; line-height: 1.5; }
+
+/* Msg detail modal */
+.msg-detail { display: flex; flex-direction: column; gap: 14px; }
+.msg-detail__row { display: flex; align-items: center; gap: 10px; font-size: 0.92rem; }
+.msg-detail__row--col { flex-direction: column; align-items: flex-start; }
+.msg-detail__label { font-weight: 700; color: #444460; min-width: 90px; font-size: 0.83rem; }
+.msg-detail__mono { font-family: monospace; font-size: 0.83rem; color: #9090a8; word-break: break-all; }
+.msg-detail__content {
+  background: #f8f9fc;
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 0.93rem;
+  color: #1a1a2e;
+  line-height: 1.6;
+  width: 100%;
+  white-space: pre-wrap;
+}
+.msg-detail__analyse {
+  background: rgba(243,156,18,0.08);
+  border-radius: 10px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.9rem;
+  width: 100%;
+}
+.msg-detail__reponses { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+.msg-detail__reponse {
+  background: #f0f8f3;
+  border-left: 3px solid #2ecc71;
+  border-radius: 0 10px 10px 0;
+  padding: 12px 14px;
+  font-size: 0.9rem;
+  color: #1a1a2e;
+}
+.msg-detail__reponse-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+
+/* Service checkboxes */
+.service-checkboxes { display: flex; flex-direction: column; gap: 8px; max-height: 160px; overflow-y: auto; }
+.service-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-size: 0.92rem;
+}
+.service-checkbox:hover { background: #fdf0f7; }
+.service-checkbox input { accent-color: #e91e8c; }
